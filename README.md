@@ -3,7 +3,8 @@
 # Easily Convert Json to Form for Flutter apps.
 
 <p align="center">
-  <img src="/images/image1.png" width="350"/>
+  <img src="https://raw.githubusercontent.com/Emex4gman/json_form_generator/master/images/image1.png" width="350"/>
+  <img src="https://raw.githubusercontent.com/Emex4gman/json_form_generator/master/images/image2.png" width="350"/>
 </p>
 
 ## Instalation
@@ -258,6 +259,9 @@ when text is added to the TextField, add field called response
 
 ```
 
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Emex4gman/json_form_generator/master/images/image2.png" width="350"/>
+</p>
 ## Getting Started
 
 For help getting started with Flutter, view our online [documentation](https://flutter.io/).
