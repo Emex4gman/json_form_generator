@@ -3,6 +3,7 @@ library json_form_generator;
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:meta/meta.dart';
 
 class JsonFormGenerator extends StatefulWidget {
   final String form;
@@ -26,9 +27,16 @@ class _JsonFormGeneratorState extends State<JsonFormGenerator> {
 
   final Map<String, dynamic> formResults = {};
 
-  int radioValue;
+  Map<String, dynamic> radioValueMap = {};
   Map<String, String> dropDownMap = {};
   Map<String, String> _datevalueMap = {};
+  Map<String, bool> switchValueMap = {};
+
+  void updateSwitchValue(dynamic itme, bool value) {
+    setState(() {
+      switchValueMap[itme] = value;
+    });
+  }
 
   List<Widget> jsonToForm() {
     List<Widget> listWidget = new List<Widget>();
@@ -46,7 +54,6 @@ class _JsonFormGeneratorState extends State<JsonFormGenerator> {
               onChanged: (String value) {
                 formResults[item["title"]] = value;
                 _handleChanged();
-                // print(formResults);
               },
               inputFormatters: item['type'] == 'integer'
                   ? [WhitelistingTextInputFormatter(RegExp('[0-9]'))]
@@ -142,7 +149,6 @@ class _JsonFormGeneratorState extends State<JsonFormGenerator> {
                 readOnly: true,
                 controller:
                     TextEditingController(text: _datevalueMap[item["title"]]),
-                //enabled: false,
                 validator: (String value) {
                   if (value.isEmpty) {
                     return 'Please  cannot be empty';
@@ -154,11 +160,9 @@ class _JsonFormGeneratorState extends State<JsonFormGenerator> {
                 },
                 onTap: () async {
                   await _selectDate();
-                  // man.text = _datevalueMap[item["title"]];
                   formResults[item["title"]] =
                       _datevalueMap[item["title"]].trim();
                 },
-
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                   labelText: item["label"],
@@ -171,13 +175,69 @@ class _JsonFormGeneratorState extends State<JsonFormGenerator> {
               )),
         );
       }
+
+      if (item['type'] == 'radio') {
+        radioValueMap["${item["title"]}"] =
+            radioValueMap["${item["title"]}"] == null
+                ? 'lost'
+                : radioValueMap["${item["title"]}"];
+
+        listWidget.add(new Container(
+            margin: new EdgeInsets.only(top: 5.0, bottom: 5.0),
+            child: new Text(item['label'],
+                style: new TextStyle(
+                    fontWeight: FontWeight.bold, fontSize: 16.0))));
+
+        for (var i = 0; i < item['items'].length; i++) {
+          listWidget.add(
+            new Row(
+              children: <Widget>[
+                new Expanded(child: new Text(item['items'][i])),
+                new Radio<dynamic>(
+                    hoverColor: Colors.red,
+                    value: item['items'][i],
+                    groupValue: radioValueMap["${item["title"]}"],
+                    onChanged: (dynamic value) {
+                      print(value);
+                      setState(() {
+                        radioValueMap["${item["title"]}"] = value;
+                      });
+                      formResults[item["title"]] = value;
+
+                      _handleChanged();
+                    })
+              ],
+            ),
+          );
+        }
+      }
+
+      if (item['type'] == 'switch') {
+        if (switchValueMap["${item["title"]}"] == null) {
+          formResults[item["title"]] = false;
+          setState(() {
+            switchValueMap["${item["title"]}"] = false;
+          });
+        }
+        listWidget.add(Row(
+          children: <Widget>[
+            new Expanded(child: new Text(item["label"])),
+            Switch(
+                value: switchValueMap["${item["title"]}"],
+                onChanged: (bool value) {
+                  updateSwitchValue(item["title"], value);
+                  formResults[item["title"]] = value;
+                  _handleChanged();
+                }),
+          ],
+        ));
+      }
     }
     return listWidget;
   }
 
   @override
   Widget build(BuildContext context) {
-    // print(formItems);
     return new Container(
       padding: EdgeInsets.all(30),
       child: new Column(

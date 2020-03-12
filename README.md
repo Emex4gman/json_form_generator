@@ -127,7 +127,7 @@ maxLines is set to 10.0
 
 ```
 
-#### date
+### date
 
 ```
  String formString = json.encode([
@@ -142,7 +142,7 @@ maxLines is set to 10.0
     ]);
 ```
 
-#### select
+### select
 
 ```
  String formString = json.encode([
@@ -155,6 +155,33 @@ maxLines is set to 10.0
         "required": "no"
 
     }
+    ]);
+
+```
+
+### radio
+
+```
+ String formString = json.encode([
+        {
+          'title': 'needs',
+          'type': 'radio',
+          'label': 'Which would you like',
+          'items': ["Java", "Dart", "All"],
+        }
+    ]);
+
+```
+
+### switch
+
+```
+ String formString = json.encode([
+        {
+      'title': 'canCode',
+      'type': 'switch',
+      'label': 'Are you old enough to code',
+    },
     ]);
 
 ```
@@ -262,8 +289,13 @@ when text is added to the TextField, add field called response
 <p align="center">
   <img src="https://raw.githubusercontent.com/Emex4gman/json_form_generator/master/images/image2.png" width="350"/>
 </p>
+
 ## Getting Started
 
 For help getting started with Flutter, view our online [documentation](https://flutter.io/).
 
 For help on editing package code, view the [documentation](https://flutter.io/developing-packages/).
+
+## TODO
+
+- Add checkbox
