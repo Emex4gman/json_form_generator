@@ -81,7 +81,7 @@ class _JsonFormGeneratorState extends State<JsonFormGenerator> {
         );
       }
       if (item['type'] == 'select') {
-        var newlist = List<String>.from(item['enum']);
+        var newlist = List<String>.from(item['items']);
 
         listWidget.add(Container(
           margin: EdgeInsets.symmetric(vertical: 10.0),

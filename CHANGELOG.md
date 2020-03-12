@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.5
+
+- Added example.dart
+
 ## 0.0.4
 
 - Added switch

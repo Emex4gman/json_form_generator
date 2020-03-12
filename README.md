@@ -61,7 +61,7 @@ String fro = json.encode([
       "title": "agegroup",
       "label": "tell us your age group",
       "type": "select",
-      "enum": ["1-20", "21-30", "31-40", "41-50", "51-60"],
+      "items": ["1-20", "21-30", "31-40", "41-50", "51-60"],
       "required": "no"
     }
   ]);
@@ -151,7 +151,7 @@ maxLines is set to 10.0
         "title": "agegroup",
         "label": "tell us your age group",
         "type": "select",
-        "enum": ["1-20", "21-30", "31-40", "41-50", "51-60"],
+        "items": ["1-20", "21-30", "31-40", "41-50", "51-60"],
         "required": "no"
 
     }
@@ -225,7 +225,7 @@ class _CreatedFormState extends State<CreatedForm> {
       "title": "agegroup",
       "label": "tell us your age group",
       "type": "select",
-      "enum": ["1-20", "21-30", "31-40", "41-50", "51-60"],
+      "items": ["1-20", "21-30", "31-40", "41-50", "51-60"],
       "required": "no"
     }
   ]);
@@ -276,7 +276,7 @@ when text is added to the TextField, add field called response
 
 ```
 // initial form
-[{"title":"name","label":"what is your name","type":"text","required":"yes"},{"title":"dateOfReg","label":"what is the date of registration","type":"date","required":"no"},{"title":"agegroup","label":"tell us your age group","type":"select","enum":["1-20","21-30","31-40","41-50","51-60"],"required":"no"}]
+[{"title":"name","label":"what is your name","type":"text","required":"yes"},{"title":"dateOfReg","label":"what is the date of registration","type":"date","required":"no"},{"title":"agegroup","label":"tell us your age group","type":"select","items":["1-20","21-30","31-40","41-50","51-60"],"required":"no"}]
 
 // initial response
  null

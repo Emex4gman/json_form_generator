@@ -1,6 +1,6 @@
 name: json_form_generator
 description: A new Flutter package project to help convert json to form.
-version: 0.0.4
+version: 0.0.5
 homepage: https://github.com/Emex4gman/json_form_generator
 
 environment:
