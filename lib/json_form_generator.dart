@@ -3,25 +3,42 @@ library json_form_generator;
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:meta/meta.dart';
 
 class JsonFormGenerator extends StatefulWidget {
-  final String form;
-  final ValueChanged<dynamic> onChanged;
+  /// the form schema is a
+  /// String of a List of Maps [json]
 
-  JsonFormGenerator({
-    @required this.form,
-    @required this.onChanged,
-  });
+  final String form;
+
+  /// ValueChanged that send out a Map
+  final ValueChanged<Map> onChanged;
+
+  /// should be used to popluate a form is the
+  /// user wants to update their data
+  final Map initValue;
+
+  JsonFormGenerator(
+      {@required this.form, @required this.onChanged, this.initValue});
   @override
   _JsonFormGeneratorState createState() =>
       _JsonFormGeneratorState(json.decode(form));
 }
 
 class _JsonFormGeneratorState extends State<JsonFormGenerator> {
+  /// map data the sentout as a responce when a value changes
   final dynamic formItems;
+  Map _initValue;
   _JsonFormGeneratorState(this.formItems);
   void _handleChanged() {
     widget.onChanged(formResults);
+  }
+
+  @override
+  void initState() {
+    _initValue = widget.initValue;
+    print(_initValue);
+    super.initState();
   }
 
   final Map<String, dynamic> formResults = {};
@@ -31,9 +48,9 @@ class _JsonFormGeneratorState extends State<JsonFormGenerator> {
   Map<String, String> _datevalueMap = {};
   Map<String, bool> switchValueMap = {};
 
-  void updateSwitchValue(dynamic itme, bool value) {
+  void updateSwitchValue(dynamic item, bool value) {
     setState(() {
-      switchValueMap[itme] = value;
+      switchValueMap[item] = value;
     });
   }
 
@@ -49,6 +66,8 @@ class _JsonFormGeneratorState extends State<JsonFormGenerator> {
           Container(
             margin: EdgeInsets.symmetric(vertical: 10.0),
             child: TextFormField(
+              initialValue:
+                  _initValue != null ? _initValue[item["title"]] : null,
               autofocus: false,
               onChanged: (String value) {
                 formResults[item["title"]] = value;
@@ -109,6 +128,7 @@ class _JsonFormGeneratorState extends State<JsonFormGenerator> {
                 dropDownMap[item["title"]] = newValue;
                 formResults[item["title"]] = newValue.trim();
               });
+              _handleChanged();
             },
             items: newlist.map<DropdownMenuItem<String>>((String value) {
               return DropdownMenuItem<String>(
@@ -134,16 +154,18 @@ class _JsonFormGeneratorState extends State<JsonFormGenerator> {
               );
             },
           );
-          if (picked != null)
+          if (picked != null) {
             setState(() => _datevalueMap[item["title"]] =
                 picked.toString().substring(0, 10));
-          print(_datevalueMap[item['title']]);
+          }
         }
 
         listWidget.add(
           Container(
               margin: EdgeInsets.symmetric(vertical: 10.0),
               child: TextFormField(
+                initialValue:
+                    _initValue != null ? _initValue[item["title"]] : null,
                 autofocus: false,
                 readOnly: true,
                 controller:
@@ -155,12 +177,12 @@ class _JsonFormGeneratorState extends State<JsonFormGenerator> {
                   return null;
                 },
                 onChanged: (String value) {
-                  print("object");
+                  _handleChanged();
                 },
                 onTap: () async {
                   await _selectDate();
-                  formResults[item["title"]] =
-                      _datevalueMap[item["title"]].trim();
+                  formResults[item["title"]] = _datevalueMap[item["title"]];
+                  _handleChanged();
                 },
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.fromLTRB(10, 0, 10, 0),
@@ -197,7 +219,6 @@ class _JsonFormGeneratorState extends State<JsonFormGenerator> {
                     value: item['items'][i],
                     groupValue: radioValueMap["${item["title"]}"],
                     onChanged: (dynamic value) {
-                      print(value);
                       setState(() {
                         radioValueMap["${item["title"]}"] = value;
                       });
@@ -213,7 +234,6 @@ class _JsonFormGeneratorState extends State<JsonFormGenerator> {
 
       if (item['type'] == 'switch') {
         if (switchValueMap["${item["title"]}"] == null) {
-          formResults[item["title"]] = false;
           setState(() {
             switchValueMap["${item["title"]}"] = false;
           });

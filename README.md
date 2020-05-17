@@ -7,7 +7,7 @@
   <img src="https://raw.githubusercontent.com/Emex4gman/json_form_generator/master/images/image2.png" width="350"/>
 </p>
 
-## Instalation
+## Installation
 
 - Add this to your package's pubspec.yaml file:
 
@@ -42,8 +42,9 @@ new JsonFormGenerator(
 
 ### Attribute
 
-- form (Type String) Your form in String
-- onChanged (Type Function)(1 parameter) call the function every time a change in the form is made
+- form (Type String) Your form in String @require
+- onChanged (Type Function)(1 parameter) call the function every time a change in the form is made @required
+- initValue (Type Map) You can now populate the form with initial value in case you are trying to update a form [optional]
 
 ### Form
 
@@ -80,6 +81,8 @@ String fro = json.encode([
 - integer
 - date
 - select
+- radio
+- switch
 
 ##### text, password, multiline, integer
 
@@ -285,6 +288,46 @@ when text is added to the TextField, add field called response
 {name: emeka, dateOfReg: 2020-03-26, agegroup: 31-40}
 
 ```
+
+## New update
+
+- You can now populate the form with initial value in case you are trying to update a form
+  -To use, pass a Map with the key as the title of your form schema
+
+- Example
+
+```
+String form = json.encode([
+           {
+              "title": "name",
+              "label": "what is your name",
+              "type": "text",
+              "required": "yes"
+            },
+             {
+              "title": "age",
+              "label": "what is your name",
+              "type": "integer",
+              "required": "yes"
+            },
+          ]);
+
+Map initValue = { "name": "emeka", "age" :"20"}
+
+
+  JsonFormGenerator(
+              form: formItems,
+              initValue:initValue
+              onChanged: (dynamic value) {
+               // handle your resoponse data
+              },
+            ),
+
+```
+
+# NOTE
+
+the key of each key value pair of the initValue has to be there same with the value of the title key
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/Emex4gman/json_form_generator/master/images/image2.png" width="350"/>

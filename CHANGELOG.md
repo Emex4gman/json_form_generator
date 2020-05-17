@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.6
+
+- you can now populate the form with initial data, in case you trying to update a form
+
+# Changelog
+
 ## 0.0.5
 
 - Added example.dart
