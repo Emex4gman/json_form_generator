@@ -316,7 +316,7 @@ Map initValue = { "name": "emeka", "age" :"20"}
 
 
   JsonFormGenerator(
-              form: formItems,
+              form: form,
               initValue:initValue
               onChanged: (dynamic value) {
                // handle your resoponse data
